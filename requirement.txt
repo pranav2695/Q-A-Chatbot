@@ -1,7 +1,7 @@
-langchain
+langchain==0.1.20
 python-dotenv
 ipykernel
-langchain_community
+langchain-community==0.0.38
 pypdf
 bs4
 arxiv
@@ -9,7 +9,7 @@ pymupdf
 wikipedia
 langchain-text-splitters
 langchain-openai
-chromadb
+chromadb==0.4.24
 langchain-community
 sentence_transformers
 langchain_huggingface
@@ -19,7 +19,7 @@ chromadb
 langchain_chroma
 beautifulsoup4
 langchain_groq
-langchain_core
+langchain-core==0.1.52
 streamlit
 fastapi
 uvicorn
