@@ -8,23 +8,38 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_groq import ChatGroq
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_openai import OpenAIEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
+from langchain_openai import ChatOpenAI
 import os
 
 from dotenv import load_dotenv
 load_dotenv()
+
+# Loading the Huggingface token
 os.environ['HF_TOKEN'] = os.getenv('HF_TOKEN')
-embeddings = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')
+# Loading the Open Ai token
+os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 # Set up streamlit 
 st.title('Conversational RAG with PDF uploads and chat history')
 st.write('upload pdf and chat with thier content')
 # Input the Groq API key
 api_key = st.text_input('Enter your Groq API key', type='password')
+provider = st.selectbox(
+    "Select Provider",
+    ["Groq", "OpenAI"],   # dropdown options
+    index=0               # default = Groq
+)
 # Check if Groq api key is provided 
 if api_key:
-    llm = ChatGroq(groq_api_key=api_key, model_name='llama-3.1-8b-instant')
+    if provider == 'OpenAI':
+        llm = ChatOpenAI(model="gpt-4o")
+        embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+    else:
+        llm = ChatGroq(groq_api_key=api_key, model_name='llama-3.1-8b-instant')
+        embeddings = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')
     # Chat interface 
     session_id = st.text_input('Session_id', value='default_session')
     # statefully manage chat history
@@ -64,7 +79,8 @@ if api_key:
                     ("human", "{input}"),
                 ]
             )
-        history_aware_retriever = create_history_aware_retriever(llm, retriever, contextualize_q_prompt)
+        history_aware_retriever = create_history_aware_retriever(llm,
+                                        retriever, contextualize_q_prompt)
         # Answer question
         system_prompt = (
                 "You are an assistant for question-answering tasks. "
