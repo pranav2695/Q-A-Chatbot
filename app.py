@@ -24,6 +24,7 @@ os.environ['HF_TOKEN'] = os.getenv('HF_TOKEN')
 os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 # Set up streamlit 
 st.title('Conversational RAG with PDF uploads and chat history')
+# Providing the drop down box to select the provider
 st.write('upload pdf and chat with thier content')
 # Input the Groq API key
 api_key = st.text_input('Enter your Groq API key', type='password')
