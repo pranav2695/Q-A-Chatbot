@@ -26,3 +26,4 @@ uvicorn
 langserve
 sse_starlette
 flake8
+langchainhub
