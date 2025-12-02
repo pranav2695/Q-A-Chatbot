@@ -52,7 +52,7 @@ if api_key:
     if uploaded_files:
         documents = []
         for uploaded_file in uploaded_files:
-            temppdf = f'./temp.pdf'
+            temppdf = './temp.pdf'
             with open(temppdf, 'wb') as file:
                 file.write(uploaded_file.getvalue())
                 file_name = uploaded_file.name
@@ -81,7 +81,7 @@ if api_key:
                 ]
             )
         history_aware_retriever = create_history_aware_retriever(llm,
-                                        retriever, contextualize_q_prompt)
+                                retriever, contextualize_q_prompt)
         # Answer question
         system_prompt = (
                 "You are an assistant for question-answering tasks. "
